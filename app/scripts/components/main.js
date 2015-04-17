@@ -9,20 +9,27 @@ var UserProfile = React.createFactory(require('./user-profile/user-profile.js'))
     ParallaxPage = React.createFactory(require('./ParallaxPage/ParallaxPage.js')),
     PaddedUnderline = React.createFactory(require('./PaddedUnderline/PaddedUnderline.js')),
     PhotoCollections = React.createFactory(require('./PhotoCollections/PhotoCollections.js')),
-	Lightbox = React.createFactory(require('./Lightbox/Lightbox.js')),
-	Description = React.createFactory(require('./Description/Description.js')),
+  	Lightbox = React.createFactory(require('./Lightbox/Lightbox.js')),
+	  Description = React.createFactory(require('./Description/Description.js')),
+  UserGallery = React.createFactory(require('./user-gallery/user-gallery.js')),
+  UserAbout = React.createFactory(require('./user-gallery/partials/user-about.js')),
+  UserArtworks = React.createFactory(require('./user-gallery/partials/user-artworks.js')),
+  UserCollection = React.createFactory(require('./user-gallery/partials/user-collection.js')),
+  UserCurated = React.createFactory(require('./user-gallery/partials/user-curated.js')),
+  UserFollowers = React.createFactory(require('./user-gallery/partials/user-followers.js')),
+  UserFollowing = React.createFactory(require('./user-gallery/partials/user-following.js')),
     App = React.createFactory(require('./app.js'));
 
 var	Dispatcher = require('./../dispatcher.js');
-	
+
 var Router = window.ReactRouter,
     Route = Router.Route,
     Routes = Router.Routes,
 	Link = Router.Link,
     DefaultRoute = Router.DefaultRoute,
-    NotFoundRoute = Router.NotFoundRoute, 
+    NotFoundRoute = Router.NotFoundRoute,
 	RouteHandler = Router.RouteHandler;
-	
+
 
 var Welcome = React.createClass({
   render: function() {
@@ -74,7 +81,7 @@ var MyMarketplace = React.createClass({
 
 var routes = (
   <Route handler={App} path='/'>
-	<Route path='/user-profile' name="user-profile" handler={UserProfile}/>
+	  <Route path='/user-profile' name="user-profile" handler={UserProfile}/>
     <Route path='/' name="welcome" handler={Welcome}/>
     <Route path='/topnav' name='topnav' handler={TopNav}/>
     <Route path='/signup' name='signup' handler={Signup}/>
@@ -91,16 +98,24 @@ var routes = (
     <Route path='/mymarketplace' name='mymarketplace' handler={MyMarketplace}/>
     <Route path='/lightbox' name='lightbox' handler={Lightbox}/>
     <Route path='/description' name='description' handler={Description}/>
-	<NotFoundRoute handler={NotFound} ></NotFoundRoute>
-	<DefaultRoute handler={Welcome} pageTitle="Home"/>
+    <Route path='/user-gallery' name='user-gallery' handler={UserGallery}>
+      <Route name='user-about' handler={UserAbout}></Route>
+      <Route name='artworks' handler={UserArtworks}></Route>
+      <Route name='collection' handler={UserCollection}></Route>
+      <Route name='curated' handler={UserCurated}></Route>
+      <Route name='followers' handler={UserFollowers}></Route>
+      <Route name='following' handler={UserFollowing}></Route>
+    </Route>
+	  <NotFoundRoute handler={NotFound} ></NotFoundRoute>
+	  <DefaultRoute handler={Welcome} pageTitle="Home"/>
   </Route>
 );
 
 
 Router.run(routes, Router.HistoryLocation, function (Handler,state) {
-  
+
   React.render( <Handler dispatcher={Dispatcher} />, document.getElementById('container') );
-  
+
 });
 
 
